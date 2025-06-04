@@ -5,7 +5,7 @@ This class diagram represents the structure and relationships of the four core e
 
 
 ## **Class Diagram (Mermaid.js Representation)**
-![Image](https://github.com/user-attachments/assets/983bdfab-7fb0-4bcb-82d8-a25a8d352ab2))
+![Image](https://github.com/user-attachments/assets/838089b9-cf9a-44c5-860f-525e48618811)
 
 
 ## 🔍Explanatory Notes
