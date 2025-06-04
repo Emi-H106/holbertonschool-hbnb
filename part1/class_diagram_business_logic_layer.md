@@ -80,16 +80,16 @@ A review belongs to a specific user and place, containing a rating and comment. 
 An amenity has a name and description, and can be created, updated, deleted, and listed.
 
 ## Relationships
-● User➡️ Place
+● User➡️ Place<br>
 One user can own multiple places, representing a one-to-many relationship.
 
-● Place ↔️  Amenity
+● Place ↔️  Amenity<br>
 A place can have multiple amenities, and each amenity can be shared by multiple places, forming a many-to-many relationship.
 
-● User ➡️ Review
+● User ➡️ Review<br>
 One user can write multiple reviews, which is a one-to-many relationship.
 
-● Place ➡️ Review
+● Place ➡️ Review<br>
  A place can have multiple reviews, also representing a one-to-many relationship.
 
 ## Conclusion
