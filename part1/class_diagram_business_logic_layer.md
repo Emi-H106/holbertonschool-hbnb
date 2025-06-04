@@ -5,7 +5,63 @@ This class diagram represents the structure and relationships of the four core e
 
 
 ## **Class Diagram (Mermaid.js Representation)**
-![Image](https://github.com/user-attachments/assets/838089b9-cf9a-44c5-860f-525e48618811)
+```mermaid
+classDiagram
+class User {
+    +UUID id
+    +string first_name
+    +string last_name
+    +string email
+    +string password
+    +bool is_admin
+    +datetime created_at
+    +datetime updated_at
+    +register()
+    +update_profile()
+    +delete_account()
+}
+class Place {
+    +UUID id
+    +string title
+    +string description
+    +float price
+    +float latitude
+    +float longitude
+    +User owner
+    +List amenities
+    +datetime created_at
+    +datetime updated_at
+    +create_place()
+    +update_place()
+    +delete_place()
+}
+class Review {
+    +UUID id
+    +User user
+    +Place place
+    +int rating
+    +string comment
+    +datetime created_at
+    +datetime updated_at
+    +create_review()
+    +update_review()
+    +delete_review()
+}
+class Amenity {
+    +UUID id
+    +string name
+    +string description
+    +datetime created_at
+    +datetime updated_at
+    +create_amenity()
+    +update_amenity()
+    +delete_amenity()
+}
+User "1" --> "*" Place : owns
+Place "*" --> "*" Amenity : contains
+User "1" --> "*" Review : writes
+Place "1" --> "*" Review : has
+```
 
 
 ## 🔍Explanatory Notes
