@@ -3,8 +3,9 @@
 ## 📌Overview
 This class diagram represents the structure and relationships of the four core entities in the business logic layer of the HBnB application.
 
+
 ## **Class Diagram (Mermaid.js Representation)**
-![image](https://www.mermaidchart.com/app/projects/ab3860ad-2181-4a0c-8ca6-e36423a741cd/diagrams/5406492d-0c4b-43bd-b8cb-4c095288aecd/version/v0.1/edit)
+![Image](https://github.com/user-attachments/assets/983bdfab-7fb0-4bcb-82d8-a25a8d352ab2))
 
 
 ## 🔍Explanatory Notes
