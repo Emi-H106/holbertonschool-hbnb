@@ -66,7 +66,7 @@ Place "1" --> "*" Review : has
 
 ## 🔍Explanatory Notes
 
-### Entities
+## Entities
 #### 👨 User
 A user has a first name, last name, email, and password, with an optional administrator status. Users can register, update their profile, and be deleted.
 
@@ -79,7 +79,7 @@ A review belongs to a specific user and place, containing a rating and comment. 
 #### 🧴Amenity
 An amenity has a name and description, and can be created, updated, deleted, and listed.
 
-### Relationships
+## Relationships
 ● User➡️ Place
 One user can own multiple places, representing a one-to-many relationship.
 
