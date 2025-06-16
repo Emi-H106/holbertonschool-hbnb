@@ -70,7 +70,7 @@ Defines routes for handling User Reviews.<br>
 Defines API routes for Amenity resources.<br>
 <br>
 ## :file_folder: app/models/
-This directory contains the core business logic classes (domain models) for the application. These classes define the attributes, relationships, and validation logic for the key entities of the HBnB system.<br>
+This directory contains the core business logic classes (domain models) for the application. <br>These classes define the attributes, relationships, and validation logic for the key entities of the HBnB system.<br>
  **:small_orange_diamond:app/models/\_\_init\_\_.py<br>**
  Initializes the models package.<br>
   **:small_orange_diamond:app/models/user.py<br>**
@@ -82,13 +82,13 @@ This directory contains the core business logic classes (domain models) for the 
    **:small_orange_diamond:app/models/amenity.py<br>**
    Defines the Amenity class, representing features or services available in a place (e.g., "Wi-Fi", "Parking")<br>
 ## :file_folder: app/services/
-This directory contains service-layer logic that acts as an intermediary between the API and the core business models. It encapsulates application workflows and provides a clean, unified interface to perform business operations.<br>
+This directory contains service-layer logic that acts as an intermediary between the API and the core business models.<br> It encapsulates application workflows and provides a clean, unified interface to perform business operations.<br>
  **:small_orange_diamond: app/services/\_\_init\_\_.py<br>**
  Initializes the services package.<br>
   **:small_orange_diamond: app/services/facade.py<br>**
  This file uses the Facade pattern to simplify complex operations by providing easy-to-use functions that handle multiple parts of the app behind the scenes.<br>
  ## :file_folder: app/persistence/
- This directory handles how data is saved and retrieved. It separates data storage from business logic and can be updated later to use a database.<br>
+ This directory handles how data is saved and retrieved. <br>It separates data storage from business logic and can be updated later to use a database.<br>
  **:small_orange_diamond: app/persistence/\_\_init\_\_.py<br>**
  Marks persistence as a package so its code can be easily imported.
 <br>
