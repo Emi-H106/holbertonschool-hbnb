@@ -33,6 +33,16 @@ hbnb/
 ```
 <br>
 
+**:red_circle:run.py**<br>
+The entry point for running the Flask application.<br>
+**:red_circle:config.py**<br>
+It is used for configuring environment variables and application settings.<br>
+**:red_circle:requirements.txt**<br>
+List all the Python packages needed for the project.<br>
+**:red_circle:README.md**<br>
+It explains the project overview and how to use it.<br>
+
+
 ## :file_folder: app/ 
 
 Main application package that organizes the system into modular components.<br>
@@ -86,14 +96,6 @@ This directory contains service-layer logic that acts as an intermediary between
 <br>
 Provides functions to manage data (create, read, update, delete) without exposing storage details.<br>
 
-**:red_circle:run.py**<br>
-The entry point for running the Flask application.<br>
-**:red_circle:config.py**<br>
-It is used for configuring environment variables and application settings.<br>
-**:red_circle:requirements.txt**<br>
-List all the Python packages needed for the project.<br>
-**:red_circle:README.md**<br>
-It explains the project overview and how to use it.
 
 ## :key: Environment Requirements
 
