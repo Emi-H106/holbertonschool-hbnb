@@ -14,6 +14,15 @@ class Place(BaseModel):
         self.reviews = []             # Review object list
 
     @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        if not value:
+            raise ValueError("Title cannot be empty.")
+        self._title = value
+    @property
     def price(self):
         return self._price
 
