@@ -11,7 +11,7 @@ class User(BaseModel):
     def first_name(self):
         return self._first_name
 
-    @first._name.setter
+    @first_name.setter
     def first_name(self, value):
         if not value:
             raise ValueError("First name cannot be empty.")
