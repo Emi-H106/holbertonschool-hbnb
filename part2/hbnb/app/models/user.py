@@ -44,6 +44,6 @@ class User(BaseModel):
                 'email': self.email,
                 'first_name': self.first_name,
                 'last_name': self.last_name,
-                'created.at': self.created_at.isoformat(),
+                'created_at': self.created_at.isoformat(),
                 'updated_at': self.updated_at.isoformat()
         }
