@@ -27,6 +27,5 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.get('/api/v1/users/nonexixtent_id')
         self.assertEqual(response.status_code, 404)
 
-
 if __name__ == '__main__':
     unittest.main()

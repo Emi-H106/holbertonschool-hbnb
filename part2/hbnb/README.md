@@ -26,10 +26,10 @@ hbnb/
 │   ├── persistence/
 │       ├── __init__.py
 │       ├── repository.py
-├── run.py<br>
-├── config.py<br>
-├── requirements.txt<br>
-├── README.md<br>
+├── run.py
+├── config.py
+├── requirements.txt
+├── README.md
 ```
 <br>
 

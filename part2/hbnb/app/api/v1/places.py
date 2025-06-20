@@ -35,7 +35,11 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         place_data = api.payload
-        new_place = facade.create_place(place_data)
+        try:
+            new_place = facade.create_place(place_data)
+        except ValueError as ve:
+            return {'error': str(ve)}, 400
+
         return new_place.to_dict(), 201
 
     @api.response(200, 'List of places retrieved successfully')
