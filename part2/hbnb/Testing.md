@@ -85,7 +85,7 @@ This interface provides:<br>
 
  - Auto-validation based on defined @api.expect models<br>
  <br>
-**:small_blue_diamond: Model Definitions** <br> 
+**🔹 Model Definitions<br>**
 Each model is described using @api.model, and these definitions are reflected in the Swagger UI. <br>
 For example:<br>
 User Model Example:<br>
@@ -98,7 +98,7 @@ user_model = api.model('User', {
 ```
 In Swagger, this appears under Definitions and is used to validate request bodies for POST/PUT.<br>
 <br>
-**:small_blue_diamond: Swagger Testing Example**<br>
+**🔹 Swagger Testing Example<br>**
 For manual testing, the Swagger UI was used to verify:<br>
 
 ✅ Correct request payload structure<br>
