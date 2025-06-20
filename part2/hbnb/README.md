@@ -30,6 +30,7 @@ hbnb/
 ├── config.py<br>
 ├── requirements.txt<br>
 ├── README.md<br>
+├── Testing.md<br>
 ```
 <br>
 
@@ -41,6 +42,8 @@ It is used for configuring environment variables and application settings.<br>
 List all the Python packages needed for the project.<br>
 **:red_circle:README.md**<br>
 It explains the project overview and how to use it.<br>
+**:red_circle:Testing.md**<br>
+Testing Process Documentation<br>
 
 
 ## :file_folder: app/ 
