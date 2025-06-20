@@ -1,7 +1,6 @@
 # HBnB - Testing Process Documentation
 
 ## :clipboard: Overview
-
 This document provides a comprehensive overview of the testing process conducted for the HBnB RESTful API project. The testing strategy includes both manual and automated approaches:<br>
 
 Manual Testing: Performed using cURL commands to interact with the API endpoints directly, validating their input/output formats, HTTP status codes, and validation rules.<br>
@@ -11,7 +10,6 @@ Automated Testing: Implemented using Python's unittest module to ensure endpoint
 The entities tested include Users, Places, Amenities, and Reviews. Each endpoint was verified for creation, retrieval (single and all), validation errors, and updates where applicable.<br>
 
 ## 1.Testing the Endpoints Using cURL
-<br>
 
 ### :pencil2: Testing case for Users (Example)
 
@@ -87,7 +85,7 @@ This interface provides:<br>
 
  - Auto-validation based on defined @api.expect models<br>
  <br>
- **🔹 Model Definitions **<br>
+**🔹 Model Definitions <br> **
 Each model is described using @api.model, and these definitions are reflected in the Swagger UI. <br>
 For example:<br>
 User Model Example:<br>
@@ -99,7 +97,7 @@ user_model = api.model('User', {
 })
 ```
 In Swagger, this appears under Definitions and is used to validate request bodies for POST/PUT.<br><br>
-** :small_blue_diamond:  Swagger Testing Example<br> **
+**:small_blue_diamond:Swagger Testing Example**<br>
 For manual testing, the Swagger UI was used to verify:<br>
 
 ✅ Correct request payload structure<br>
@@ -116,7 +114,7 @@ Input: Valid JSON body with all required fields<br><br>
 
  - HTTP 201 Created<br>
  - Response body matches expected schema<br>
-image<br><br>
+![Image](https://github.com/user-attachments/assets/d864addb-68c5-4958-b722-b53e5ad2d215)<br>
 **🔹 Summary **
  
  - Swagger UI played a crucial role in black-box and manual testing.<br>
