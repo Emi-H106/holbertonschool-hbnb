@@ -26,10 +26,16 @@ hbnb/
 │   ├── persistence/
 │       ├── __init__.py
 │       ├── repository.py
+├── tests/
+│   ├── test_users.py
+│   ├── test_amenities.py
+│   ├── test_places.py
+│   ├── test_reviews.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
 ├── README.md
+
 ```
 <br>
 
@@ -95,6 +101,12 @@ This directory contains service-layer logic that acts as an intermediary between
  **:small_orange_diamond:persistence/repository.py**
 <br>
 Provides functions to manage data (create, read, update, delete) without exposing storage details.<br>
+## :file_folder: tests/<br>
+This directory contains files with unit tests written for each entity<br>
+**:small_orange_diamond:tests/test_users.py**
+**:small_orange_diamond:tests/test_amenities.py**
+**:small_orange_diamond:tests/test_places.py**
+**:small_orange_diamond:tests/test_reviews.py**
 
 
 ## :key: Environment Requirements
