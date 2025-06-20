@@ -143,4 +143,106 @@ pip install -r requirements.txt
  ```
 
  2. Open a browser and visit http://localhost:5000
+# Business Logic Layer - Core Classes
+
+This directory contains the core business logic classes for the HBnB application, implementing the main entities and their relationships. These classes form the foundation of the application's domain model, handling data attributes, validation, and interactions between objects.
+
+---
+
+## Overview
+
+The core entities are:
+
+- **User**  
+- **Place**  
+- **Review**  
+- **Amenity**
+
+Each class inherits from a common `BaseModel` that provides shared attributes such as UUID `id`, `created_at`, and `updated_at` timestamps.
+
+UUIDs are used as unique identifiers to ensure global uniqueness, scalability, and improved security.
+
+---
+
+## Class Descriptions
+
+### User
+
+Represents a user of the application.
+
+**Attributes:**
+
+- `id` (str): UUID unique identifier.
+- `first_name` (str): User's first name. Required, max length 50.
+- `last_name` (str): User's last name. Required, max length 50.
+- `email` (str): User's email address. Required, unique, validated format.
+- `is_admin` (bool): Flag indicating admin privileges. Defaults to False.
+- `created_at` (datetime): Creation timestamp.
+- `updated_at` (datetime): Last update timestamp.
+
+---
+
+### Place
+
+Represents a lodging place.
+
+**Attributes:**
+
+- `id` (str): UUID unique identifier.
+- `title` (str): Title of the place. Required, max length 100.
+- `description` (str): Optional detailed description.
+- `price` (float): Price per night. Must be positive.
+- `latitude` (float): Geographic latitude (-90 to 90).
+- `longitude` (float): Geographic longitude (-180 to 180).
+- `owner` (User): Reference to the User who owns the place. Must exist.
+- `created_at` (datetime): Creation timestamp.
+- `updated_at` (datetime): Last update timestamp.
+- `reviews` (list[Review]): List of associated reviews.
+- `amenities` (list[Amenity]): List of associated amenities.
+
+**Methods:**
+
+- `add_review(review)`: Add a Review instance to the place.
+- `add_amenity(amenity)`: Add an Amenity instance to the place.
+
+---
+
+### Review
+
+Represents a review for a place.
+
+**Attributes:**
+
+- `id` (str): UUID unique identifier.
+- `text` (str): Content of the review. Required.
+- `rating` (int): Rating between 1 and 5 inclusive.
+- `place` (Place): Reference to the reviewed Place. Must exist.
+- `user` (User): Reference to the User who wrote the review. Must exist.
+- `created_at` (datetime): Creation timestamp.
+- `updated_at` (datetime): Last update timestamp.
+
+---
+
+### Amenity
+
+Represents an amenity offered at a place.
+
+**Attributes:**
+
+- `id` (str): UUID unique identifier.
+- `name` (str): Name of the amenity (e.g., "Wi-Fi"). Required, max length 50.
+- `created_at` (datetime): Creation timestamp.
+- `updated_at` (datetime): Last update timestamp.
+
+---
+
+## Implementation Details
+
+- All classes inherit from `BaseModel` which handles UUID generation, timestamps, and attribute updating.
+- Validation is performed on attribute setters to ensure data integrity (e.g., email format, string length, rating ranges).
+- Relationships are maintained via object references and lists.
+- Timestamps are updated whenever an object is modified.
+- The many-to-many relationship between `Place` and `Amenity` is managed via a list of amenity instances in the `Place` class.
+
+---
 
