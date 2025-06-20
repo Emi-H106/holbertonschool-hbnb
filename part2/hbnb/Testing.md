@@ -110,9 +110,9 @@ Input: Valid JSON body with all required fields<br><br>
 ・Swagger UI played a crucial role in black-box and manual testing.<br>
 ・It helped confirm that:<br>
 
-	-All endpoints are documented and accessible.<br>
-	-Models are correctly defined and validated.<br>
-	-Error handling works as expected before hitting the backend.<br>
+	・All endpoints are documented and accessible.<br>
+	・Models are correctly defined and validated.<br>
+	・Error handling works as expected before hitting the backend.<br>
 
 ・It complements unit tests and cURL by offering real-time, visual API
    verification.
