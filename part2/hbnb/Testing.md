@@ -114,8 +114,7 @@ Input: Valid JSON body with all required fields<br><br>
  - HTTP 201 Created<br>
  - Response body matches expected schema<br>
 ![Image](https://github.com/user-attachments/assets/d864addb-68c5-4958-b722-b53e5ad2d215)<br>
-<br>
-**:small_blue_diamond:Summary**
+**:small_blue_diamond:Summary**<br>
  
  - Swagger UI played a crucial role in black-box and manual testing.<br>
  - It helped confirm that:<br>
