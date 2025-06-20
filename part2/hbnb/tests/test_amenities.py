@@ -26,6 +26,14 @@ class TestAmenityEndpoints(unittest.TestCase):
         # Test retrieving a non-existent amenity
         response = self.client.get('/api/v1/amenities/nonexistent_id')
         self.assertEqual(response.status_code, 404)
+    
+    def test_get_all_amenities(self):
+        self.client.post('/api/v1/amenities/', json={"name": "Pool"})
+        response = self.client.get('/api/v1/amenities/')
+        self.assertEqual(response.status_code, 200)
+        amenities = response.get_json()
+        self.assertIsInstance(amenities, list)
+        self.assertGreaterEqual(len(amenities), 1)
 
 
 if __name__ == '__main__':

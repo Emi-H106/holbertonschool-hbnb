@@ -48,6 +48,39 @@ class TestPlaceEndpoints(unittest.TestCase):
         response = self.client.get('/api/v1/places/nonexistent_id')
         self.assertEqual(response.status_code, 404)
 
+    def test_get_all_places(self):
+        response = self.client.get('/api/v1/places/')
+        self.assertEqual(response.status_code, 200)
+        places = response.get_json()
+        self.assertIsInstance(places, list)
+        self.assertGreaterEqual(len(places), 1)
+    
+    def test_put_place_update(self):
+        create_response = self.client.post('/api/v1/places/', json={
+        "title": "The luxury hotel of your dreams",
+        "description": "Enjoy top class rooms",
+        "price": 300.0,
+        "latitude": 40.0,
+        "longitude": -70.0,
+        "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    })
+        self.assertEqual(create_response.status_code, 201)
+        place = create_response.get_json()
+        place_id = place["id"]
+        
+        update_data = {
+            "title": "The luxury hotel of your dreams",
+            "description": "Enjoy top class rooms",
+            "price": 500.0,
+            "latitude": 40.0,
+            "longitude": -70.0,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+        update_response = self.client.put(f'/api/v1/places/{place_id}', json=update_data)
+        self.assertEqual(update_response.status_code, 200)
+        updated_place = update_response.get_json()
+        self.assertEqual(updated_place["price"], 500.0)
+
 
 if __name__ == '__main__':
     unittest.main()
