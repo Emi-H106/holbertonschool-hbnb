@@ -103,10 +103,10 @@ This directory contains service-layer logic that acts as an intermediary between
 Provides functions to manage data (create, read, update, delete) without exposing storage details.<br>
 ## :file_folder: tests/<br>
 This directory contains files with unit tests written for each entity<br>
-**:small_orange_diamond:tests/test_users.py**
-**:small_orange_diamond:tests/test_amenities.py**
-**:small_orange_diamond:tests/test_places.py**
-**:small_orange_diamond:tests/test_reviews.py**
+**:small_orange_diamond:tests/test_users.py**<br>
+**:small_orange_diamond:tests/test_amenities.py**<br>
+**:small_orange_diamond:tests/test_places.py**<br>
+**:small_orange_diamond:tests/test_reviews.py**<br>
 
 
 ## :key: Environment Requirements
