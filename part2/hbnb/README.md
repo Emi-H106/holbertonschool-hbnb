@@ -245,4 +245,6 @@ Represents an amenity offered at a place.
 - The many-to-many relationship between `Place` and `Amenity` is managed via a list of amenity instances in the `Place` class.
 
 ---
-
+## Authors
+[Laura Aupetit](https://github.com/C4lice)<br>
+[Emi Hatano](https://github.com/Emi-H106)
