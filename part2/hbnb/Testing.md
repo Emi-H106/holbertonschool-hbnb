@@ -102,8 +102,8 @@ Endpoint: POST /api/v1/users/<br>
 Input: Valid JSON body with all required fields<br><br>
 **Swagger Result:**<br>
 
- - HTTP 201 Created<br>
- - Response body matches expected schema<br>
+ ・HTTP 201 Created<br>
+ ・Response body matches expected schema<br>
 ![Image](https://github.com/user-attachments/assets/d864addb-68c5-4958-b722-b53e5ad2d215)<br>
 **:small_blue_diamond:Summary**<br>
  
