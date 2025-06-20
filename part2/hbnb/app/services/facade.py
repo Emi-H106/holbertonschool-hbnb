@@ -69,12 +69,16 @@ class HBnBFacade:
         # Basic validation
         required_fields = ['user_id', 'place_id', 'text']
         if not all(field in review_data for field in required_fields):
-            raise ValueError("Les champs user_id, place_id et text sont requis")
+            raise ValueError("The fields user_id, place_id, and text are required")
+        
+        rating = review_data.get('rating')
+        if not isinstance(rating, int) or not (1 <= rating <= 5):
+            raise ValueError("Rating must be an integer between 1 and 5")
         
         review = Review(**review_data)
         self.review_repo.add(review)
         return review
-
+    
     def get_review(self, review_id):
         return self.review_repo.get(review_id)
 
@@ -94,3 +98,4 @@ class HBnBFacade:
     def get_reviews_by_place(self, place_id):
         return self.review_repo.get_by_attribute('place_id', place_id)
     
+facade = HBnBFacade()

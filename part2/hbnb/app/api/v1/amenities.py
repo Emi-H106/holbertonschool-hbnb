@@ -23,6 +23,9 @@ class AmenityList(Resource):
         amenity_data = api.payload
 
         # Catching errors happening at Amenity instanciation
+        name = amenity_data.get("name", "").strip()
+        if not name:
+            return {"error": "Name is required and cannot be empty."}, 400
         try:
             new_amenity = facade.create_amenity(amenity_data)
         except ValueError as e:
@@ -34,13 +37,12 @@ class AmenityList(Resource):
     @api.response(404, "No amenities found")
     def get(self):
         """Retrieve a list of all amenities"""
-
-        amenity_list = facade.get_all_amenities()
-
+        amenities = facade.amenity_repo.get_all()
         # If there are amenities, return them as JSON
-        if amenity_list:
-            return jsonify(amenity_list)
-
+        if amenities:
+            amenity_list = [amenity.to_dict() for amenity in amenities]
+            return amenity_list, 200
+        
         # Base case if no amenities were found
         return {"message": "No amenities found"}, 404
 

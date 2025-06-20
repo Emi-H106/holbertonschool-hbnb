@@ -35,6 +35,10 @@ class User(BaseModel):
     def email(self, value):
         if not value:
             raise ValueError("Email cannot be empty.")
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, value):
+            raise ValueError("Invalid email format.")
+        
         self._email = value
 
     def to_dict(self):
