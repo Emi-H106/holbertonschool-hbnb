@@ -8,6 +8,7 @@ review_model = api.model("Review", {
     "id": fields.String(readonly=True),
     "user_id": fields.String(required=True),
     "place_id": fields.String(required=True),
+    "rating": fields.Integer(required=True),
     "text": fields.String(required=True)
 })
 

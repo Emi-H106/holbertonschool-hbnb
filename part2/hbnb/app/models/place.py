@@ -1,7 +1,7 @@
 from app.models.__init__ import BaseModel
 
 class Place(BaseModel):
-    def __init__(self, owner_id, title, description='', city='', price=0, latitude=None, longitude=None):
+    def __init__(self, owner_id, title, description='', city='', price=0, latitude=None, longitude=None, amenities=None):
         super().__init__()
         self.owner_id = owner_id      # id of the User who created the location
         self.title = title
@@ -10,7 +10,7 @@ class Place(BaseModel):
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        self.amenity_ids = []         # list of Amenities ids
+        self.amenity_ids =  amenities if amenities is not None else []      # list of Amenities ids
         self.reviews = []             # Review object list
 
     @property
@@ -48,7 +48,7 @@ class Place(BaseModel):
 
     @longitude.setter
     def longitude(self, value):
-        if value is not None and not -180 <= 180:
+        if value is not None and not -180 <= value <= 180:
             raise ValueError("Longitude must be between -180 and 180.")
         self._longitude = value
 

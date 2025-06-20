@@ -1,4 +1,6 @@
 from app.models.__init__ import BaseModel  #create the class User with BaseModel
+import re
+
 
 class User(BaseModel):
     def __init__(self, email, first_name, last_name):
