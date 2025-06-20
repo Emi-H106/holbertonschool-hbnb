@@ -71,19 +71,11 @@ This interface provides:<br>
 
  - A list of all available endpoints grouped by resource (e.g., /users/,
    /places/, etc.)<br>
-
-      
-
  - The request and response format for each endpoint<br>
-
-      
-
  - Try-it-out functionality to test endpoints directly from the   
    browser<br>
-
-      
-
  - Auto-validation based on defined @api.expect models<br>
+-<br>
 **🔹 Model Definitions<br>**
 Each model is described using @api.model, and these definitions are reflected in the Swagger UI. <br>
 For example:<br>
