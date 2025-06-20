@@ -2,6 +2,7 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.place import Place
 from app.models.amenity import Amenity
+from app.models.review import Review
 
 class HBnBFacade:
     def __init__(self):
@@ -63,3 +64,33 @@ class HBnBFacade:
             amenity.update(amenity_data)
             self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
+
+    def create_review(self, review_data):
+        # Basic validation
+        required_fields = ['user_id', 'place_id', 'text']
+        if not all(field in review_data for field in required_fields):
+            raise ValueError("Les champs user_id, place_id et text sont requis")
+        
+        review = Review(**review_data)
+        self.review_repo.add(review)
+        return review
+
+    def get_review(self, review_id):
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        return self.review_repo.get_all()
+
+    def update_review(self, review_id, review_data):
+        review = self.get_review(review_id)
+        if review:
+            review.update(review_data)
+            self.review_repo.update(review_id, review_data)
+        return review
+
+    def delete_review(self, review_id):
+        return self.review_repo.delete(review_id)
+
+    def get_reviews_by_place(self, place_id):
+        return self.review_repo.get_by_attribute('place_id', place_id)
+    
