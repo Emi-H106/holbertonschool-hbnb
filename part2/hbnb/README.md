@@ -35,6 +35,7 @@ hbnb/
 ├── config.py
 ├── requirements.txt
 ├── README.md
+├── Testing.md
 
 ```
 <br>
