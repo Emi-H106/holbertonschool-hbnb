@@ -1,13 +1,17 @@
 from app.models.__init__ import BaseModel  #create the class User with BaseModel
 import re
+from app.extensions import bcrypt
 
 
 class User(BaseModel):
-    def __init__(self, email, first_name, last_name):
+    def __init__(self, email, first_name, last_name, password=None):
         super().__init__()
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
+        self.password = None
+        if password:
+            self.hash_password(password)
 
     @property
     def first_name(self):
@@ -42,6 +46,23 @@ class User(BaseModel):
             raise ValueError("Invalid email format.")
         
         self._email = value
+
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        self._password = value
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
 
     def to_dict(self):
         """Convert the user object to a dictionary."""
