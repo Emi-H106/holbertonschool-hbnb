@@ -4,12 +4,12 @@ from app.extensions import bcrypt
 
 
 class User(BaseModel):
-    def __init__(self, email, first_name, last_name, password=None):
+    def __init__(self, email, first_name, last_name, password=None, is_admin=False):
         super().__init__()
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-        self.password = None
+        self.is_admin = is_admin
         if password:
             self.hash_password(password)
 

@@ -96,6 +96,4 @@ class HBnBFacade:
         return self.review_repo.delete(review_id)
 
     def get_reviews_by_place(self, place_id):
-        return self.review_repo.get_by_attribute('place_id', place_id)
-    
-facade = HBnBFacade()
+        return self.review_repo.get_by_attribute('place_id', place_id) or []
