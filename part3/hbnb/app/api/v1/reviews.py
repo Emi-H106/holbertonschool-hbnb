@@ -63,12 +63,18 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a notice"""
         current_user_id = get_jwt_identity()
+        user_id = current_user_id.get('id')
+        is_admin = current_user_id.get('is_admin', False)
+
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
-        if review.user_id != current_user_id:
+
+        if not is_admin and review.user_id != user_id:
             api.abort(403, "Unauthorized action.")
+
         review_data = api.payload
+
         if 'user_id' in review_data:
             del review_data['user_id']
 
@@ -79,12 +85,20 @@ class ReviewResource(Resource):
     def delete(self, review_id):
         """Delete a notification"""
         current_user_id = get_jwt_identity()
+        user_id = current_user_id.get('id')
+        is_admin = current_user_id.get('is_admin', False)
+
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
-        if review.user_id != current_user_id:
+
+        if not is_admin and review.user_id != user_id:
             api.abort(403, "Unauthorized action.")
+
         deleted = facade.delete_review(review_id)
+        if not deleted:
+            api.abort(400, "Failed to delete review")
+
         return {"message": "Review deleted"}, 204
 
 @api.route("/place/<string:place_id>")

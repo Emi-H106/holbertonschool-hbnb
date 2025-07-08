@@ -12,6 +12,19 @@ class User(BaseModel):
         self.is_admin = is_admin
         if password:
             self.hash_password(password)
+    
+    def update(self, data):
+        """Update user attributes with the provided data."""
+        if 'first_name' in data:
+            self.first_name = data['first_name']
+        if 'last_name' in data:
+            self.last_name = data['last_name']
+        if 'email' in data:
+            self.email = data['email']
+        if 'password' in data:
+            self.hash_password(data['password'])
+        if 'is_admin' in data:
+            self.is_admin = data['is_admin']
 
     @property
     def first_name(self):
@@ -67,7 +80,7 @@ class User(BaseModel):
     def to_dict(self):
         """Convert the user object to a dictionary."""
         return {
-                'id': self.id,
+                'id': str(self.id),  # Ensure id is a string
                 'email': self.email,
                 'first_name': self.first_name,
                 'last_name': self.last_name,

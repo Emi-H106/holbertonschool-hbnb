@@ -11,7 +11,11 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-    def create_user(self, user_data):
+    def create_user(self, user_data, force_admin=False):
+        if force_admin:
+            user_data['is_admin'] = True 
+        else:
+            user_data['is_admin'] = False #Forcibly False at the time of user's own registration
         user = User(**user_data)
         self.user_repo.add(user)
         return user
@@ -28,6 +32,9 @@ class HBnBFacade:
             user.update(user_data)
             self.user_repo.update(user_id, user_data)
         return user
+    
+    def delete_user(self, user_id):
+        return self.user_repo.delete(user_id)
 
     def create_place(self, place_data):
         place = Place(**place_data)
@@ -46,6 +53,9 @@ class HBnBFacade:
             place.update(place_data)
             self.place_repo.update(place_id, place_data)
         return place
+    
+    def delete_place(self, place_id):
+        return self.place_repo.delete(place_id)
 
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
@@ -64,6 +74,9 @@ class HBnBFacade:
             amenity.update(amenity_data)
             self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
+    
+    def delete_amenity(self, amenity_id):
+        return self.amenity_repo.delete(amenity_id)
 
     def create_review(self, review_data):
         # Basic validation

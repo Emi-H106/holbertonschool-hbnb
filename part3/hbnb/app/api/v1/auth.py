@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from app.extensions import jwt
 from app.services import facade
+from uuid import UUID
 
 api = Namespace('auth', description='Authentication operations')
 
@@ -38,6 +39,6 @@ class Login(Resource):
 class ProtectedResource(Resource):
     @jwt_required()
     def get(self):
-        current_user_id = get_jwt_identity() # Retrieve the user's identity from the token
+        current_user_id = UUID(get_jwt_identity()) # Retrieve the user's identity from the token
         return {'message': f'Hello, user {current_user_id}'}, 200
 

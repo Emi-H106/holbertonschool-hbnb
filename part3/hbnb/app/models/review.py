@@ -12,9 +12,9 @@ class Review(BaseModel):
     def to_dict(self):
         """Serialize the review instance to a dictionary"""
         return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "place_id": self.place_id,
+            "id": str(self.id),  # Ensure id is a string
+            "user_id": str(self.user_id),  # Ensure user_id is a string
+            "place_id": str(self.place_id),  # Ensure place_id is a string
             "text": self.text,
             "rating": self.rating,
             "created_at": self.created_at.isoformat(),
