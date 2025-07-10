@@ -6,6 +6,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'  # Base SQLite locale
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Évite le warning inutile
 
 config = {
     'development': DevelopmentConfig,
