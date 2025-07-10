@@ -1,76 +1,80 @@
 from app.models.__init__ import BaseModel  #create the class User with BaseModel
 import re
+from sqlalchemy.orm import relationship
 from app.extensions import bcrypt
 
+class User(BaseModel, db.Model):
+    __tablename__ = 'user'
 
-class User(BaseModel):
-    def __init__(self, email, first_name, last_name, password=None):
-        super().__init__()
-        self.email = email
-        self.first_name = first_name
-        self.last_name = last_name
-        self.password = None
-        if password:
-            self.hash_password(password)
+    first_name = db.Column(db.String(255), nullable=False)
+    last_name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
-    @property
-    def first_name(self):
-        return self._first_name
-
-    @first_name.setter
-    def first_name(self, value):
-        if not value:
-            raise ValueError("First name cannot be empty.")
-        self._first_name = value
-
-    @property
-    def last_name(self):
-        return self._last_name
-
-    @last_name.setter
-    def last_name(self, value):
-        if not value:
-            raise ValueError("Last name cannot be empty.")
-        self._last_name = value
-
-    @property
-    def email(self):
-        return self._email
-
-    @email.setter
-    def email(self, value):
-        if not value:
-            raise ValueError("Email cannot be empty.")
-        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        if not re.match(email_regex, value):
-            raise ValueError("Invalid email format.")
-        
-        self._email = value
-
+    places = relationship('Place', backref='owner', lazy=True)
+    reviews = relationship('Review', backref='author', lazy=True)
 
     @property
     def password(self):
         return self._password
 
     @password.setter
-    def password(self, value):
-        self._password = value
-
-    def hash_password(self, password):
+    def password(self, password):
         """Hashes the password before storing it."""
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self._password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
         return bcrypt.check_password_hash(self.password, password)
 
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        if(re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b', email)):
+            self._email = email
+            self.save()
+        else:
+            raise ValueError ("Email is not conforme to standar")
+    
+    @property
+    def first_name(self):
+        return self._first_name
+
+    @first_name.setter
+    def first_name(self, first_name):
+        if (len(first_name) > 50):
+            raise ValueError ("First name to long")
+        elif (first_name == ""):
+            raise ValueError ("First name mustn't be empty")
+        else:
+            self._first_name = first_name
+            self.save()
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, last_name):
+        if(len(last_name) > 50):
+            raise ValueError ("Last name to long")
+        elif (last_name == ""):
+            raise ValueError ("Last name mustn't be empty")
+        else:
+            self._last_name = last_name
+            self.save()
+
     def to_dict(self):
-        """Convert the user object to a dictionary."""
         return {
-                'id': self.id,
-                'email': self.email,
-                'first_name': self.first_name,
-                'last_name': self.last_name,
-                'created_at': self.created_at.isoformat(),
-                'updated_at': self.updated_at.isoformat()
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
         }
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
