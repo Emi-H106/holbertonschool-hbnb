@@ -16,7 +16,7 @@ class Place(BaseModel):
 
     @validates('title')
     def validate_title(self, key, value):
-        if value == "" or len(value) > 100:
+        if value == "" or len(value) > 50:
             raise ValueError("Title cannot be empty and must be less than 100 characters.")
         return value
 
