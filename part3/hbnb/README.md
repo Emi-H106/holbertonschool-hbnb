@@ -37,7 +37,7 @@ hbnb/
 ├── requirements.txt
 ├── README.md
 ```
-## :bulb:Installation
+## :bulb:Installation & Run the application
 
  1. Clone the repository:<br>
  ``` 
