@@ -1,7 +1,8 @@
-from app.models.__init__ import BaseModel  #create the class User with BaseModel
-import re
-from sqlalchemy.orm import relationship
+from app.models.__init__ import BaseModel
+from sqlalchemy.orm import validates, relationship
 from app.extensions import bcrypt
+from app import db
+import re
 
 class User(BaseModel, db.Model):
     __tablename__ = 'user'
@@ -17,56 +18,38 @@ class User(BaseModel, db.Model):
 
     @property
     def password(self):
-        return self._password
+        return self.password_hash
 
     @password.setter
     def password(self, password):
         """Hashes the password before storing it."""
-        self._password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
-        return bcrypt.check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
-    @property
-    def email(self):
-        return self._email
+    @validates('email')
+    def validate_email(self, key, email):
+        if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b', email):
+            raise ValueError("Email is not conforme to standar")
+        return email
 
-    @email.setter
-    def email(self, email):
-        if(re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b', email)):
-            self._email = email
-            self.save()
-        else:
-            raise ValueError ("Email is not conforme to standar")
-    
-    @property
-    def first_name(self):
-        return self._first_name
+    @validates('first_name')
+    def validate_first_name(self, key, first_name):
+        if len(first_name) > 50:
+            raise ValueError("First name too long")
+        if not first_name:
+            raise ValueError("First name mustn't be empty")
+        return first_name
 
-    @first_name.setter
-    def first_name(self, first_name):
-        if (len(first_name) > 50):
-            raise ValueError ("First name to long")
-        elif (first_name == ""):
-            raise ValueError ("First name mustn't be empty")
-        else:
-            self._first_name = first_name
-            self.save()
-
-    @property
-    def last_name(self):
-        return self._last_name
-
-    @last_name.setter
-    def last_name(self, last_name):
-        if(len(last_name) > 50):
-            raise ValueError ("Last name to long")
-        elif (last_name == ""):
-            raise ValueError ("Last name mustn't be empty")
-        else:
-            self._last_name = last_name
-            self.save()
+    @validates('last_name')
+    def validate_last_name(self, key, last_name):
+        if len(last_name) > 50:
+            raise ValueError("Last name too long")
+        if not last_name:
+            raise ValueError("Last name mustn't be empty")
+        return last_name
 
     def to_dict(self):
         return {
