@@ -1,6 +1,12 @@
-from app.models.__init__ import BaseModel
-from sqlalchemy import Column, Integer, String, Float
-from sqlalchemy.orm import validates
+from app.models.base_model import BaseModel
+from app import db
+from sqlalchemy.orm import relationship, validates
+
+# Association table many-to-many
+place_amenity = db.Table('place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('place.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Place(BaseModel):
     __tablename__ = 'places'
@@ -13,6 +19,9 @@ class Place(BaseModel):
     price = Column(Float, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
+    reviews = relationship('Review', backref='place', lazy=True)
+    amenities = relationship('Amenity', secondary=place_amenity, backref=db.backref('places', lazy='dynamic'))
 
     @validates('title')
     def validate_title(self, key, value):
