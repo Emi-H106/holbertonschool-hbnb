@@ -1,35 +1,40 @@
-from flask import Flask
-from flask_restx import Api
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
-from flask_bcrypt import Bcrypt
+from app import db
+from app.models.base_model import BaseModel
+from sqlalchemy.orm import validates
 
-bcrypt = Bcrypt()
-jwt = JWTManager()
-db = SQLAlchemy()
+class Review(BaseModel):
+    __tablename__ = 'review'
 
-from app.api.v1.auth import api as auth_ns
-from app.api.v1.users import api as users_ns
-from app.api.v1.places import api as places_ns
-from app.api.v1.reviews import api as reviews_ns
-from app.api.v1.amenities import api as amenities_ns
+    text = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('place.id'), nullable=False)
 
+    # constraint: a user can rate a location only once
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'place_id', name='uq_user_place_review'),
+    )
 
-def create_app(config_class="config.DevelopmentConfig"):
-    app = Flask(name)
-    app.config.from_object(config_class)
-    api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
-    api.add_namespace(amenities_ns, path='/api/v1/amenities')
-    api.add_namespace(reviews_ns, path='/api/v1/reviews')
-    api.add_namespace(users_ns, path='/api/v1/users')
-    api.add_namespace(places_ns, path='/api/v1/places')
-    api.add_namespace(auth_ns, path='/api/v1/auth')
-    db.init_app(app)
-    bcrypt.init_app(app)
-    jwt.init_app(app)
+    # validation: rating must be between 1 and 5
+    @validates("rating")
+    def validate_rating(self, key, rating):
+        if 1 <= rating <= 5:
+            return rating
+        raise ValueError("Rating must be between 1 and 5")
 
-    from app.models.user import create_first_admin
+    # validation: text must not be empty
+    @validates("text")
+    def validate_text(self, key, text):
+        if text and text.strip():
+            return text
+        raise ValueError("The review text must not be empty")
 
-    with app.app_context():
-        create_first_admin()
-    return app
+    # setting up a JSON response
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'place': self.place_id,
+            'user': self.user_id,
+            'rating': self.rating,
+            'text': self.text
+        }
