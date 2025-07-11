@@ -1,63 +1,75 @@
-from app.models.__init__ import BaseModel
-from sqlalchemy.orm import validates, relationship
-from app.extensions import bcrypt
+from app.models.base_model import BaseModel
 from app import db
+from sqlalchemy.orm import validates
 import re
+from app.extensions import bcrypt
 
-class User(BaseModel, db.Model):
+class User(BaseModel):
     __tablename__ = 'user'
 
-    first_name = db.Column(db.String(255), nullable=False)
-    last_name = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    first_name = db.Column(db.String(60), nullable=False)
+    last_name = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    places = relationship('Place', backref='owner', lazy=True)
-    reviews = relationship('Review', backref='author', lazy=True)
+    def __init__(self, email, first_name, last_name, password=None, is_admin=False, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        self.is_admin = is_admin
+        if password:
+            self.hash_password(password)
 
-    @property
-    def password(self):
-        return self.password_hash
+    @validates("email")
+    def validate_email(self, key, value):
+        if not value:
+            raise ValueError("Email cannot be empty.")
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, value):
+            raise ValueError("Invalid email format.")
+        return value
 
-    @password.setter
-    def password(self, password):
+    @validates("first_name")
+    def validate_first_name(self, key, value):
+        if not value or not value.strip():
+            raise ValueError("First name cannot be empty.")
+        return value.strip()
+
+    @validates("last_name")
+    def validate_last_name(self, key, value):
+        if not value or not value.strip():
+            raise ValueError("Last name cannot be empty.")
+        return value.strip()
+
+    def hash_password(self, password):
         """Hashes the password before storing it."""
-        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
-        return bcrypt.check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password, password)
 
-    @validates('email')
-    def validate_email(self, key, email):
-        if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b', email):
-            raise ValueError("Email is not conforme to standar")
-        return email
-
-    @validates('first_name')
-    def validate_first_name(self, key, first_name):
-        if len(first_name) > 50:
-            raise ValueError("First name too long")
-        if not first_name:
-            raise ValueError("First name mustn't be empty")
-        return first_name
-
-    @validates('last_name')
-    def validate_last_name(self, key, last_name):
-        if len(last_name) > 50:
-            raise ValueError("Last name too long")
-        if not last_name:
-            raise ValueError("Last name mustn't be empty")
-        return last_name
+    def update(self, data):
+        """Update user attributes with the provided data."""
+        if 'first_name' in data:
+            self.first_name = data['first_name']
+        if 'last_name' in data:
+            self.last_name = data['last_name']
+        if 'email' in data:
+            self.email = data['email']
+        if 'password' in data:
+            self.hash_password(data['password'])
+        if 'is_admin' in data:
+            self.is_admin = data['is_admin']
 
     def to_dict(self):
+        """Convert the user object to a dictionary."""
         return {
-            "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "email": self.email,
+            'id': str(self.id),
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'is_admin': self.is_admin
         }
-
-    def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
