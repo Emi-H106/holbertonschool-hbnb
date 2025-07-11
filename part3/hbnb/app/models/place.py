@@ -1,60 +1,46 @@
 from app.models.__init__ import BaseModel
+from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy.orm import validates
 
 class Place(BaseModel):
-    def __init__(self, owner_id, title, description='', city='', price=0, latitude=None, longitude=None, amenities=None):
-        super().__init__()
-        self.owner_id = owner_id      # id of the User who created the location
-        self.title = title
-        self.description = description
-        self.city = city
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.amenity_ids =  amenities if amenities is not None else []      # list of Amenities ids
-        self.reviews = []             # Review object list
+    __tablename__ = 'places'
 
-    @property
-    def title(self):
-        return self._title
+    id = Column(Integer, primary_key=True)
+    owner_id = Column(Integer, nullable=False)
+    title = Column(String(128), nullable=False)
+    description = Column(String(1024), nullable=True)
+    city = Column(String(128), nullable=False)
+    price = Column(Float, nullable=False)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
 
-    @title.setter
-    def title(self, value):
-        if not value:
-            raise ValueError("Title cannot be empty.")
-        self._title = value
-    @property
-    def price(self):
-        return self._price
+    @validates('title')
+    def validate_title(self, key, value):
+        if value == "" or len(value) > 100:
+            raise ValueError("Title cannot be empty and must be less than 100 characters.")
+        return value
 
-    @price.setter
-    def price(self, value):
+    @validates('price')
+    def validate_price(self, key, value):
         if value < 0:
             raise ValueError("Price must be a non-negative float.")
-        self._price = value
+        return value
 
-    @property
-    def latitude(self):
-        return self._latitude
-
-    @latitude.setter
-    def latitude(self, value):
-        if value is not None and not -90 <= value <=90:
+    @validates('latitude')
+    def validate_latitude(self, key, value):
+        if value is not None and not -90 <= value <= 90:
             raise ValueError("Latitude must be between -90 and 90.")
-        self._latitude = value
+        return value
 
-    @property
-    def longitude(self):
-        return self._longitude
-
-    @longitude.setter
-    def longitude(self, value):
+    @validates('longitude')
+    def validate_longitude(self, key, value):
         if value is not None and not -180 <= value <= 180:
             raise ValueError("Longitude must be between -180 and 180.")
-        self._longitude = value
+        return value
 
     def to_dict(self):
         """Convert the place object to a dictionary."""
-        return{
+        return {
             'id': self.id,
             'owner_id': self.owner_id,
             'title': self.title,
@@ -65,6 +51,4 @@ class Place(BaseModel):
             'longitude': self.longitude,
             'amenity_ids': self.amenity_ids,
             'reviews': self.reviews,
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
         }
