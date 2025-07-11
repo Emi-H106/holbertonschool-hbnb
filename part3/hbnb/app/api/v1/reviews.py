@@ -1,7 +1,8 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 from flask import request
+from uuid import UUID
 
 api = Namespace("reviews", description="Gestion des avis")
 
@@ -63,14 +64,19 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a notice"""
         current_user_id = get_jwt_identity()
-        user_id = current_user_id.get('id')
-        is_admin = current_user_id.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+
+        if isinstance(current_user_id, dict):
+            user_id = UUID(current_user_id.get('id'))
+        else:
+            user_id = UUID(current_user_id)
 
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
 
-        if not is_admin and review.user_id != user_id:
+        if not is_admin and str(review.user_id) != str(user_id):
             api.abort(403, "Unauthorized action.")
 
         review_data = api.payload
@@ -85,14 +91,19 @@ class ReviewResource(Resource):
     def delete(self, review_id):
         """Delete a notification"""
         current_user_id = get_jwt_identity()
-        user_id = current_user_id.get('id')
-        is_admin = current_user_id.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+
+        if isinstance(current_user_id, dict):
+            user_id = UUID(current_user_id.get('id'))
+        else:
+            user_id = UUID(current_user_id)
 
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
 
-        if not is_admin and review.user_id != user_id:
+        if not is_admin and str(review.user_id) != str(user_id):
             api.abort(403, "Unauthorized action.")
 
         deleted = facade.delete_review(review_id)
