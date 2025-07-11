@@ -57,6 +57,19 @@ pip install -r requirements.txt
 ```
  python run.py
  ```
+
+## :key: Environment Requirements
+
+ - Python 3.8+<br>
+ - pip (Python package manager)<br>
+
+## 🧩 Technologies
+
+- **Flask**
+- **SQLAlchemy**
+- **Flask-JWT-Extended**
+- **Flask-Bcrypt**
+
 ## 🔑 Authentication
 
 - Register with `/api/v1/users/`
