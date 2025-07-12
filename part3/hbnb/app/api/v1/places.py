@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from app.services import facade
+from uuid import UUID
 
 api = Namespace('places', description='Place operations')
 
@@ -32,9 +34,13 @@ class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         """Register a new place"""
         place_data = api.payload
+        current_user = get_jwt_identity()
+        place_data['owner_id'] = UUID(current_user)
+
         try:
             new_place = facade.create_place(place_data)
         except ValueError as ve:
@@ -63,10 +69,46 @@ class PlaceResource(Resource):
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def put(self, place_id):
         """Update a place's information"""
-        place_data = api.payload
-        updated_place = facade.update_place(place_id, place_data)
-        if not updated_place:
+        user_id = UUID(get_jwt_identity())
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+
+        place = facade.get_place(place_id)
+        if not place:
             return {'error': 'Place not found'}, 404
+        
+        if not is_admin and place.owner_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+        
+        place_data = api.payload
+        if 'owner_id' in place_data:
+            del place_data['owner_id'] # Ignore owner_id if the user tries to send it
+
+        updated_place = facade.update_place(place_id, place_data)
         return updated_place.to_dict(), 200
+    
+    @api.response(204, 'Place deleted successfully')
+    @api.response(404, 'Place not found')
+    @api.response(403, 'Unauthorized action')
+    @jwt_required()
+    def delete(self, place_id):
+        """Delete a place"""
+        current_user = get_jwt_identity()
+        user_id = UUID(current_user.get('id')) if isinstance(current_user, dict) else UUID(current_user)
+        is_admin = current_user.get('is_admin', False) if isinstance(current_user, dict) else False
+
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        
+        if not is_admin and place.owner_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+        
+        deleted = facade.place_repo.delete(place_id)
+        if not deleted:
+            return {'error': 'Failed to delete place'}, 400
+        
+        return '', 204

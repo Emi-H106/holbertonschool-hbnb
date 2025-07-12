@@ -49,15 +49,15 @@ class Place(BaseModel):
 
     def to_dict(self):
         """Convert the place object to a dictionary."""
+
         return {
-            'id': self.id,
-            'owner_id': self.owner_id,
-            'title': self.title,
-            'description': self.description,
-            'city': self.city,
-            'price': self.price,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
-            'amenity_ids': self.amenity_ids,
-            'reviews': self.reviews,
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "owner": self.owner.to_dict(),
+            "amenities": [element.to_dict() for element in self.amenities],
+            "reviews": [element.to_dict() for element in self.reviews]
         }

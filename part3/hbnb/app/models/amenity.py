@@ -19,6 +19,7 @@ class Amenity(BaseModel):
 
     def to_dict(self):
         return {
+
             "id": self.id,
             "name": self.name,
             "created_at": self.created_at.isoformat() if self.created_at else None,

@@ -19,8 +19,11 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-    # --- USERS ---
     def create_user(self, user_data):
+        user = User(**user_data)
+        user.hash_password(user_data['password'])
+        self.user_repo.add(user)
+        return user
         user = User(**user_data)
         self.user_repo.add(user)
         return user
@@ -40,8 +43,31 @@ class HBnBFacade:
             user.update(user_data)
             self.user_repo.update(user_id, user_data)
         return user
+    
+    def delete_user(self, user_id):
+        return self.user_repo.delete(user_id)
 
-    # --- AMENITIES ---
+    def create_place(self, place_data):
+        place = Place(**place_data)
+        self.place_repo.add(place)
+        return place
+
+    def get_place(self, place_id):
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        return self.place_repo.get_all()
+
+    def update_place(self, place_id, place_data):
+        place = self.get_place(place_id)
+        if place:
+            place.update(place_data)
+            self.place_repo.update(place_id, place_data)
+        return place
+    
+    def delete_place(self, place_id):
+        return self.place_repo.delete(place_id)
+
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
@@ -59,6 +85,9 @@ class HBnBFacade:
             amenity.update(amenity_data)
             self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
+    
+    def delete_amenity(self, amenity_id):
+        return self.amenity_repo.delete(amenity_id)
 
     # --- PLACES ---
     def create_place(self, place_data):
@@ -122,5 +151,6 @@ class HBnBFacade:
 
     def delete_review(self, review_id):
         return self.review_repo.delete(review_id)
-    
-facade = HBnBFacade()
+
+    def get_reviews_by_place(self, place_id):
+        return self.review_repo.get_by_attribute('place_id', place_id) or []

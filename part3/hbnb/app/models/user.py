@@ -5,6 +5,7 @@ import re
 from app.extensions import bcrypt
 
 class User(BaseModel):
+
     __tablename__ = 'user'
 
     email = db.Column(db.String(120), nullable=False, unique=True)
@@ -15,12 +16,26 @@ class User(BaseModel):
 
     def __init__(self, email, first_name, last_name, password=None, is_admin=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
         self.is_admin = is_admin
         if password:
             self.hash_password(password)
+    
+    def update(self, data):
+        """Update user attributes with the provided data."""
+        if 'first_name' in data:
+            self.first_name = data['first_name']
+        if 'last_name' in data:
+            self.last_name = data['last_name']
+        if 'email' in data:
+            self.email = data['email']
+        if 'password' in data:
+            self.hash_password(data['password'])
+        if 'is_admin' in data:
+            self.is_admin = data['is_admin']
 
     @validates("email")
     def validate_email(self, key, value):
@@ -67,9 +82,11 @@ class User(BaseModel):
     def to_dict(self):
         """Convert the user object to a dictionary."""
         return {
+          
             'id': str(self.id),
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
             'is_admin': self.is_admin
+
         }

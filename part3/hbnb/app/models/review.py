@@ -32,6 +32,7 @@ class Review(BaseModel):
     # setting up a JSON response
     def to_dict(self):
         return {
+
             'id': self.id,
             'place': self.place_id,
             'user': self.user_id,
