@@ -1,70 +1,63 @@
-from app.models.__init__ import BaseModel
+from app.models.base_model import BaseModel
+from app import db
+from sqlalchemy.orm import relationship, validates
+
+# Association table many-to-many
+place_amenity = db.Table('place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('place.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Place(BaseModel):
-    def __init__(self, owner_id, title, description='', city='', price=0, latitude=None, longitude=None, amenities=None):
-        super().__init__()
-        self.owner_id = owner_id      # id of the User who created the location
-        self.title = title
-        self.description = description
-        self.city = city
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.amenity_ids =  amenities if amenities is not None else []      # list of Amenities ids
-        self.reviews = []             # Review object list
+    __tablename__ = 'places'
 
-    @property
-    def title(self):
-        return self._title
+    id = Column(Integer, primary_key=True)
+    owner_id = Column(Integer, nullable=False)
+    title = Column(String(128), nullable=False)
+    description = Column(String(1024), nullable=True)
+    city = Column(String(128), nullable=False)
+    price = Column(Float, nullable=False)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
 
-    @title.setter
-    def title(self, value):
-        if not value:
-            raise ValueError("Title cannot be empty.")
-        self._title = value
-    @property
-    def price(self):
-        return self._price
+    reviews = relationship('Review', backref='place', lazy=True)
+    amenities = relationship('Amenity', secondary=place_amenity, backref=db.backref('places', lazy='dynamic'))
 
-    @price.setter
-    def price(self, value):
+    @validates('title')
+    def validate_title(self, key, value):
+        if value == "" or len(value) > 50:
+            raise ValueError("Title cannot be empty and must be less than 100 characters.")
+        return value
+
+    @validates('price')
+    def validate_price(self, key, value):
         if value < 0:
             raise ValueError("Price must be a non-negative float.")
-        self._price = value
+        return value
 
-    @property
-    def latitude(self):
-        return self._latitude
-
-    @latitude.setter
-    def latitude(self, value):
-        if value is not None and not -90 <= value <=90:
+    @validates('latitude')
+    def validate_latitude(self, key, value):
+        if value is not None and not -90 <= value <= 90:
             raise ValueError("Latitude must be between -90 and 90.")
-        self._latitude = value
+        return value
 
-    @property
-    def longitude(self):
-        return self._longitude
-
-    @longitude.setter
-    def longitude(self, value):
+    @validates('longitude')
+    def validate_longitude(self, key, value):
         if value is not None and not -180 <= value <= 180:
             raise ValueError("Longitude must be between -180 and 180.")
-        self._longitude = value
+        return value
 
     def to_dict(self):
         """Convert the place object to a dictionary."""
-        return{
-            'id': str(self.id),  # Ensure id is a string
-            'owner_id': str(self.owner_id),  # Ensure owner_id is a string
-            'title': self.title,
-            'description': self.description,
-            'city': self.city,
-            'price': self.price,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
-            'amenity_ids': [str(aid) for aid in self.amenity_ids],
-            'reviews': [r.to_dict() for r in self.reviews],
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
+
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "owner": self.owner.to_dict(),
+            "amenities": [element.to_dict() for element in self.amenities],
+            "reviews": [element.to_dict() for element in self.reviews]
         }

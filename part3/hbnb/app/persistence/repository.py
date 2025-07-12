@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-import uuid
+from app.persistence.repository import Repository
+from app import db
+
 
 class Repository(ABC):
     @abstractmethod
@@ -60,3 +62,40 @@ class InMemoryRepository(Repository):
 
     def get_by_attribute(self, attr_name, attr_value):
         return next((obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value), None)
+
+class SQLAlchemyRepository(Repository):
+    def __init__(self, model):
+        self.model = model  # Le modèle SQLAlchemy à gérer
+
+    def add(self, obj):
+        """Ajoute un nouvel objet dans la base"""
+        db.session.add(obj)
+        db.session.commit()
+
+    def get(self, obj_id):
+        """Récupère un objet par son ID"""
+        return self.model.query.get(obj_id)
+
+    def get_all(self):
+        """Retourne tous les objets"""
+        return self.model.query.all()
+
+    def update(self, obj_id, data):
+        """Met à jour un objet existant"""
+        obj = self.get(obj_id)
+        if obj:
+            for key, value in data.items():
+                setattr(obj, key, value)  # Mise à jour dynamique des attributs
+            db.session.commit()
+
+    def delete(self, obj_id):
+        """Supprime un objet"""
+        obj = self.get(obj_id)
+        if obj:
+            db.session.delete(obj)
+            db.session.commit()
+
+    def get_by_attribute(self, attr_name, attr_value):
+        """Recherche un objet via un attribut dynamique"""
+        return self.model.query.filter_by(**{attr_name: attr_value}).first()
+    
