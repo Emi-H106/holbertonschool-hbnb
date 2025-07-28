@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addFilterListener();
 });
 
+let allPlaces = []; // Save place data globally
 
 // Check login status
 function checkAuthentication() {
@@ -31,26 +32,6 @@ function getTokenFromCookie() {
   return '';
 }
 
-
-// Display places in HTML
-function displayPlaces(places) {
-  const container = document.getElementById('places-list');
-  container.innerHTML = '';
-
-  places.forEach(place => {
-    const card = document.createElement('div');
-    card.className = 'place-card';
-    card.innerHTML = `
-      <h2>${place.title}</h2>
-      <p>Price per night: $${place.price}</p>
-      <button class="details-button">View Details</button>
-    `;
-    container.appendChild(card);
-  });
-}
-
-let allPlaces = []; // Save place data globally
-
 // Get all places once on initial display
 async function fetchPlaces(token) {
   try {
@@ -67,6 +48,36 @@ async function fetchPlaces(token) {
   } catch (error) {
    console.error('Failed to fetch places:', error);
   }
+}
+
+
+// Display places in HTML
+function displayPlaces(places) {
+  const container = document.getElementById('places-list');
+  container.innerHTML = '';
+
+  places.forEach(place => {
+    const card = document.createElement('div');
+    card.className = 'place-card';
+
+    const title = document.createElement('h2');
+    title.textContent = place.title;
+
+    const price = document.createElement('p');
+    price.textContent = `Price per night: $${place.price}`;
+
+    const detailsButton = document.createElement('button');
+    detailsButton.className = 'details-button';
+    detailsButton.textContent = 'View Details';
+    detailsButton.addEventListener('click', () => {
+      window.location.href = `/place/${place.id}`;
+    });
+    
+    card.appendChild(title);
+    card.appendChild(price);
+    card.appendChild(detailsButton);
+    container.appendChild(card);
+  });
 }
 
 // Set the dropdown options (10, 50, 100, All)

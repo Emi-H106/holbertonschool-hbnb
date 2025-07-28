@@ -66,13 +66,18 @@ footer {
     margin-top: 2rem;
 }
 
-.place-card {
-    background-color: #fff;
-    margin: 20px;
+.place-card,
+.review-card {
+    max-width: 800px;
+    width: 90%;
+    margin: 20px auto;
     padding: 10px;
+    background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .place-card h2 {
@@ -114,16 +119,6 @@ footer {
 .login-button:hover {
     background-color: #555;
 }
-   
-
-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    background-color: #fff;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
 
 form h2 {
     margin-bottom: 1rem;
@@ -142,7 +137,20 @@ form select {
     margin-bottom: 1rem;
 }
 
-form button {
+.add-review-form,
+form {
+    max-width: 800px;
+    width: 90%;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+form button,
+.add-review-form button {
     width: 100%;
     background-color: #333;
     color: #fff;
@@ -152,18 +160,22 @@ form button {
     cursor: pointer;
 }
 
-form button:hover {
+form button:hover,
+.add-review-form button:hover {
     background-color: #555;
 }
 
-.place-card {
-    background-color: #fff;
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
+.details-button {
+    background-color: #e3bc45;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.details-button:hover {
+    background-color: #e5da9c;
 }
 
 .place-card h2 {
@@ -194,15 +206,6 @@ form button:hover {
     justify-content: center;
 }
 
-.add-review-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    background-color: #fff;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
 .add-review-form label {
     display: block;
     margin: 0.5rem 0 0.2rem;
@@ -215,18 +218,41 @@ form button:hover {
     margin-bottom: 1rem;
 }
 
-.add-review-form button {
-    background-color: #333;
-    color: #fff;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.add-review-form button:hover {
-    background-color: #555;
-}
-
 .reviewing {
     text-align: center;
+}
+
+.place-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+#place-detail {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+#place-detail p {
+    margin-bottom: 0.8rem;
+}
+
+.reviews-header {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#add-review h2{
+    text-align: center;
+}
+
+.review-card p {
+    margin: 0.3rem 0;
+}
+
+.amenities-list {
+    list-style-type: none;
+    padding-left: 0;
 }

@@ -26,6 +26,14 @@
             <form id="review-form" class=""add-review form">
                 <label for="review-text">Review:</label>
                 <textarea id="review-text" name="review-text" required></textarea>
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1 &#11088;</option>
+                    <option value="2">2 &#11088;&#11088;</option>
+                    <option value="3">3 &#11088;&#11088;&#11088;</option>
+                    <option value="4">4 &#11088;&#11088;&#11088;&#11088;</option>
+                    <option value="5">5 &#11088;&#11088;&#11088;&#11088;&#11088;</option>
+                </select>
                 
                 <button type="submit">Submit</button>
             </form>
@@ -34,6 +42,6 @@
     <footer>
         <p>&#169; 2025 Hbnb Evolution.All right reserved.</p>
     </footer>
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='place.js') }}"></script>
 </body>
 </html>

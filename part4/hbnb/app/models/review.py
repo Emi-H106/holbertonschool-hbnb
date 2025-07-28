@@ -37,6 +37,7 @@ class Review(BaseModel):
             'id': self.id,
             'place': self.place_id,
             'user': self.user_id,
+            'user_name': f"{self.user.first_name} {self.user.last_name}" if self.user else "Unknown",
             'rating': self.rating,
             'text': self.text
         }
