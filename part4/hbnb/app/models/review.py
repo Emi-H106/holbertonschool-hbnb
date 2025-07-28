@@ -1,14 +1,16 @@
 from app import db
-from app.models.base_model import BaseModel
+from app.models.baseclass import BaseModel
 from sqlalchemy.orm import validates
 
 class Review(BaseModel):
-    __tablename__ = 'review'
+    __tablename__ = 'reviews'
 
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
-    place_id = db.Column(db.String(36), db.ForeignKey('place.id'), nullable=False)
+
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+    
 
     # constraint: a user can rate a location only once
     __table_args__ = (
@@ -32,7 +34,6 @@ class Review(BaseModel):
     # setting up a JSON response
     def to_dict(self):
         return {
-
             'id': self.id,
             'place': self.place_id,
             'user': self.user_id,

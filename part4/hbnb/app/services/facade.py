@@ -1,30 +1,21 @@
-from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.place import Place
 from app.models.amenity import Amenity
 from app.models.review import Review
-from app.models.user import User
 from app.persistence.repository import SQLAlchemyRepository
+from app.persistence.repository import UserRepository
 
-from app.models.user import User
-from app.models.place import Place
-from app.models.amenity import Amenity
-from app.models.review import Review
-from app.persistence.repository import InMemoryRepository
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.user_repo = UserRepository()
+        self.place_repo = SQLAlchemyRepository(Place)
+        self.review_repo = SQLAlchemyRepository(Review)
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
 
     def create_user(self, user_data):
         user = User(**user_data)
         user.hash_password(user_data['password'])
-        self.user_repo.add(user)
-        return user
-        user = User(**user_data)
         self.user_repo.add(user)
         return user
 
@@ -35,7 +26,7 @@ class HBnBFacade:
         return self.user_repo.get_all()
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
 
     def update_user(self, user_id, user_data):
         user = self.get_user(user_id)
@@ -48,6 +39,12 @@ class HBnBFacade:
         return self.user_repo.delete(user_id)
 
     def create_place(self, place_data):
+        owner = self.get_user(place_data.pop("owner_id"))
+        amenities = [self.get_amenity(a_id) for a_id in place_data.pop("amenities", [])]
+
+        place_data["owner"] = owner
+        place_data["amenities"] = amenities
+
         place = Place(**place_data)
         self.place_repo.add(place)
         return place
@@ -89,31 +86,6 @@ class HBnBFacade:
     def delete_amenity(self, amenity_id):
         return self.amenity_repo.delete(amenity_id)
 
-    # --- PLACES ---
-    def create_place(self, place_data):
-        owner = self.get_user(place_data.pop("owner_id"))
-        amenities = [self.get_amenity(a_id) for a_id in place_data.pop("amenities", [])]
-
-        place_data["owner"] = owner
-        place_data["amenities"] = amenities
-
-        place = Place(**place_data)
-        self.place_repo.add(place)
-        return place
-
-    def get_place(self, place_id):
-        return self.place_repo.get(place_id)
-
-    def get_all_places(self):
-        return self.place_repo.get_all()
-
-    def update_place(self, place_id, place_data):
-        place = self.get_place(place_id)
-        if place:
-            place.update(place_data)
-            self.place_repo.update(place_id, place_data)
-        return place
-
     # --- REVIEWS ---
     def create_review(self, review_data):
         # Validation des champs obligatoires
@@ -140,7 +112,7 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        return self.review_repo.get_by_attribute('place_id', place_id)
+        return self.review_repo.get_by_attribute('place_id', place_id) or []
 
     def update_review(self, review_id, review_data):
         review = self.get_review(review_id)
@@ -151,6 +123,3 @@ class HBnBFacade:
 
     def delete_review(self, review_id):
         return self.review_repo.delete(review_id)
-
-    def get_reviews_by_place(self, place_id):
-        return self.review_repo.get_by_attribute('place_id', place_id) or []

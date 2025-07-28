@@ -1,4 +1,4 @@
-from app.models.base_model import BaseModel
+from app.models.baseclass import BaseModel
 from app import db
 from sqlalchemy.orm import validates
 import re
@@ -6,13 +6,16 @@ from app.extensions import bcrypt
 
 class User(BaseModel):
 
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     email = db.Column(db.String(120), nullable=False, unique=True)
     first_name = db.Column(db.String(60), nullable=False)
     last_name = db.Column(db.String(60), nullable=False)
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+
+    places = db.relationship('Place', backref='owner', lazy=True)
+    reviews = db.relationship('Review', backref='user', lazy=True)
 
     def __init__(self, email, first_name, last_name, password=None, is_admin=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,19 +27,7 @@ class User(BaseModel):
         if password:
             self.hash_password(password)
     
-    def update(self, data):
-        """Update user attributes with the provided data."""
-        if 'first_name' in data:
-            self.first_name = data['first_name']
-        if 'last_name' in data:
-            self.last_name = data['last_name']
-        if 'email' in data:
-            self.email = data['email']
-        if 'password' in data:
-            self.hash_password(data['password'])
-        if 'is_admin' in data:
-            self.is_admin = data['is_admin']
-
+    
     @validates("email")
     def validate_email(self, key, value):
         if not value:

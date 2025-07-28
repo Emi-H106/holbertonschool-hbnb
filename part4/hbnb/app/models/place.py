@@ -1,24 +1,27 @@
-from app.models.base_model import BaseModel
+from app.models.baseclass import BaseModel
 from app import db
 from sqlalchemy.orm import relationship, validates
+from datetime import datetime
+
 
 # Association table many-to-many
 place_amenity = db.Table('place_amenity',
-    db.Column('place_id', db.String(36), db.ForeignKey('place.id'), primary_key=True),
+    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
     db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
 )
 
 class Place(BaseModel):
     __tablename__ = 'places'
 
-    id = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, nullable=False)
-    title = Column(String(128), nullable=False)
-    description = Column(String(1024), nullable=True)
-    city = Column(String(128), nullable=False)
-    price = Column(Float, nullable=False)
-    latitude = Column(Float, nullable=True)
-    longitude = Column(Float, nullable=True)
+
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    title = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(1024), nullable=True)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=True)
+    longitude = db.Column(db.Float, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     reviews = relationship('Review', backref='place', lazy=True)
     amenities = relationship('Amenity', secondary=place_amenity, backref=db.backref('places', lazy='dynamic'))

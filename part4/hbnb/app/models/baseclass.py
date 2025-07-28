@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 from app import db
 
-class BaseModel(db.model):
+class BaseModel(db.Model):
     __abstract__ = True
   
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -19,7 +19,3 @@ class BaseModel(db.model):
             if hasattr(self, key):
                 setattr(self, key, value)
         self.save()
-
-    @abstractmethod
-    def to_dict(self):
-        pass

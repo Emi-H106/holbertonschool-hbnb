@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
-from app.persistence.repository import Repository
 from app import db
+import uuid
+from app.models.user import User
+
 
 
 class Repository(ABC):
@@ -98,4 +100,12 @@ class SQLAlchemyRepository(Repository):
     def get_by_attribute(self, attr_name, attr_value):
         """Recherche un objet via un attribut dynamique"""
         return self.model.query.filter_by(**{attr_name: attr_value}).first()
+    
+class UserRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(User)
+
+    def get_user_by_email(self, email):
+        user = self.model.query.filter_by(email=email).first()
+        return user
     

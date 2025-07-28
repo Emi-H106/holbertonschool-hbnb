@@ -1,0 +1,232 @@
+.logo {
+    height: 50px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.login-button {
+    background-color: #A9A9A9;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+
+.login-button:hover {
+    background-color: #777;
+}
+
+.home-button {
+    background-color: #A9A9A9;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.home-button:hover {
+    background-color: #777;
+} 
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #ffc14d;
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav {
+    display: flex;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #ffc14d;
+    color: #fff;
+    margin-top: 2rem;
+}
+
+.place-card {
+    background-color: #fff;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.place-card h2 {
+    margin-bottom: 0.5rem;
+}
+
+.place-card p {
+    margin-bottom: 1rem;
+}
+
+.details-button {
+    background-color: #708090;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#filter {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.login-form button {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #555;
+}
+   
+
+form {
+    max-width: 400px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+form h2 {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+form button {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+.place-card {
+    background-color: #fff;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.place-card h2 {
+    margin-bottom: 0.5rem;
+}
+
+.place-card p {
+    margin-bottom: 1rem;
+}
+
+.details-button {
+    background-color: #e3bc45;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.details-button:hover {
+    background-color: #e5da9c;
+}
+
+#places-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.add-review-form {
+    max-width: 400px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.add-review-form label {
+    display: block;
+    margin: 0.5rem 0 0.2rem;
+}
+
+.add-review-form textarea,
+.add-review-form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.add-review-form button {
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.add-review-form button:hover {
+    background-color: #555;
+}
+
+.reviewing {
+    text-align: center;
+}
