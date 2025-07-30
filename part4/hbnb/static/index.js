@@ -13,6 +13,7 @@ function checkAuthentication() {
   
   if(!token) {
     loginLink.style.display = 'block';
+    fetchPlaces(); 
   } else {
     loginLink.style.display = 'none';
     fetchPlaces(token);
@@ -35,16 +36,23 @@ function getTokenFromCookie() {
 // Get all places once on initial display
 async function fetchPlaces(token) {
   try {
-   const response = await fetch('http://localhost:5000/api/v1/places', {
-    headers: {
-      'Authorization': `Bearer ${token}`
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
+
+   const response = await fetch('http://localhost:5000/api/v1/places/', {
+    headers: headers,
+    credentials: 'include'
    });
+
    if (!response.ok) {
      throw new Error(`HTTP error! status: ${response.status}`);
    }
+
    allPlaces = await response.json();
    displayPlaces(allPlaces);
+
   } catch (error) {
    console.error('Failed to fetch places:', error);
   }

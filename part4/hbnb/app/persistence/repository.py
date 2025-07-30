@@ -63,7 +63,7 @@ class InMemoryRepository(Repository):
         return self._storage.pop(obj_id, None) is not None
 
     def get_by_attribute(self, attr_name, attr_value):
-        return next((obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value), None)
+        return [obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value]
 
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):
@@ -99,7 +99,7 @@ class SQLAlchemyRepository(Repository):
 
     def get_by_attribute(self, attr_name, attr_value):
         """Recherche un objet via un attribut dynamique"""
-        return self.model.query.filter_by(**{attr_name: attr_value}).first()
+        return self.model.query.filter_by(**{attr_name: attr_value}).all()
     
 class UserRepository(SQLAlchemyRepository):
     def __init__(self):

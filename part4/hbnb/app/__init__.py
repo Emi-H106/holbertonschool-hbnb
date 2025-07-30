@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
+from flask_cors import CORS
 import config
 from app.extensions import bcrypt, restx_api, jwt
 from flask_sqlalchemy import SQLAlchemy
@@ -22,6 +23,9 @@ def create_app(config_class="config.DevelopmentConfig"):
         )
     app.config.from_object(config_class)
     print("App created")
+
+    CORS(app, resources={r"/api/*": {"origins":["http://localhost:5000", "http://127.0.0.1:5000"]}}, supports_credentials=True)
+
 
     bcrypt.init_app(app)
     restx_api.init_app(app)

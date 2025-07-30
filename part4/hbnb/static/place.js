@@ -6,7 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Get place ID from URL
 function getPlaceIdFromURL() {
-    const pathParts = window.location.pathname.split('/');   
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromQuery = urlParams.get('id');
+
+    if (idFromQuery) return idFromQuery;
+
+    const pathParts = window.location.pathname.split('/').filter(Boolean);   
     return pathParts[pathParts.length - 1]; // Last part of the path is the place ID
   }
 
@@ -18,23 +23,25 @@ function getCookie(name) {
 
 function checkAuthentication(placeId) {
   const token = getCookie('token');
-  const reviewForm = document.getElementById('add-review');
+  const addReviewSection = document.getElementById('add-review');
 
   if (!token) {
-    reviewForm.style.display = 'none'; // Hide review submission form if not logged in
+    addReviewSection.style.display = 'none'; // Hide add review section if not logged in
+    fetchPlaceDetails(null, placeId);
   } else {
-    reviewForm.style.display = 'block'; // Show review form if logged in
+    addReviewSection.style.display = 'block'; // Show add review section if logged in
     fetchPlaceDetails(token, placeId);  // Fetch place details if logged in
     }
+  return token; // Return token for use in review submission
 }
 
 // Get facility details from API
 async function fetchPlaceDetails(token, placeId) {
   try {
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
     const response = await fetch(`http://localhost:5000/api/v1/places/${placeId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers: headers,
+      credentials: 'include'  // Include cookies for session management
     });
 
     if (!response.ok) throw new Error('Data acquisition failed');
@@ -81,7 +88,7 @@ function displayPlaceDetails(place) {
 
     const amenities = document.createElement('ul');
     amenities.className = 'amenities-list';
-    
+
     (place.amenities || []).forEach(item => {
         const li = document.createElement('li');
         li.textContent = item.name || item;
@@ -121,11 +128,11 @@ function displayPlaceDetails(place) {
     });
 
     function renderStars(rating) {
-        const maxStars = 5;
-        let stars = '';
-        for (let i = 1; i < maxStars; i++) {
-            stars += i <= rating ? '★' : '☆';
-        }
-        return stars;
+      const maxStars = 5;
+      let stars = '';
+      for (let i = 1; i <= maxStars; i++) {
+        stars += i <= rating ? '★' : '☆';
+      }
+      return stars;
     }
 }
