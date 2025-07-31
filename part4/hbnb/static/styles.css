@@ -33,6 +33,7 @@
 body {
     background-color: #f4f4f4;
     color: #333;
+    padding-bottom:60px;
 }
 
 header {
@@ -75,7 +76,7 @@ footer {
     background-color: #FFA07A;
     color: #fff;
     margin-top: 2rem;
-    position: absolute;
+    position: fixed;
     bottom: 0;
 }
 
@@ -158,6 +159,7 @@ form {
     border-radius: 10px;
     box-sizing: border-box;
 }
+
 
 form button,
 .add-review-form button {
