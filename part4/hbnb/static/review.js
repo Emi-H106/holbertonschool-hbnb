@@ -20,36 +20,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Get place ID from URL
-function getPlaceIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const idFromQuery = urlParams.get('id');
+// // Get place ID from URL
+// function getPlaceIdFromURL() {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const idFromQuery = urlParams.get('id');
 
-    if (idFromQuery) return idFromQuery;
+//     if (idFromQuery) return idFromQuery;
 
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    return pathParts[pathParts.length - 1]; // Last part of the path is the place ID
-  }
+//     const pathParts = window.location.pathname.split('/').filter(Boolean);
+//     return pathParts[pathParts.length - 1]; // Last part of the path is the place ID
+//   }
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+// function getCookie(name) {
+//   const value = `; ${document.cookie}`;
+//   const parts = value.split(`; ${name}=`);
+//   if (parts.length === 2) return parts.pop().split(';').shift();
+// }
 
-function checkAuthentication(placeId) {
-  const token = getCookie('token');
-  const addReviewSection = document.getElementById('add-review');
+// function checkAuthentication(placeId) {
+//   const token = getCookie('token');
+//   const addReviewSection = document.getElementById('add-review');
 
-  if (!token) {
-    addReviewSection.style.display = 'none'; // Hide add review section if not logged in
-    fetchPlaceDetails(null, placeId);
-  } else {
-    addReviewSection.style.display = 'block'; // Show add review section if logged in
-    fetchPlaceDetails(token, placeId);  // Fetch place details if logged in
-    }
-    return token; // Return token for use in review submission
-}
+//   if (!token) {
+//     addReviewSection.style.display = 'none'; // Hide add review section if not logged in
+//     fetchPlaceDetails(null, placeId);
+//   } else {
+//     addReviewSection.style.display = 'block'; // Show add review section if logged in
+//     fetchPlaceDetails(token, placeId);  // Fetch place details if logged in
+//     }
+//     return token; // Return token for use in review submission
+// }
+
 
 // --- Review submission logic ---
 async function submitReview(token, placeId, reviewText, rating) {
